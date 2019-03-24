@@ -1,3 +1,6 @@
+'''
+Utility methods for plotting images.
+'''
 import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib import gridspec
@@ -21,15 +24,15 @@ def plot_image_list(image_list, title_list=None, ncols=2, scale_factor=2.0,
     size_height = scale_factor * nrows
 
     fig = plt.figure(figsize=(size_width, size_height))
-    gs = gridspec.GridSpec(ncols=ncols, nrows=nrows,
-                           wspace=wspace, hspace=hspace)
+    gs = gridspec.GridSpec(
+        ncols=ncols, nrows=nrows, wspace=wspace, hspace=hspace)
 
     for i, image in enumerate(image_list):
         ax = fig.add_subplot(gs[i])
         ax.axis('off')
 
         if bgr_image:
-            image = __bgr2rgb(image)
+            image = _bgr2rgb(image)
 
         ax.imshow(image, cmap='gray')
 
@@ -49,15 +52,15 @@ def plot_descriptor(descriptor, dict_names, figwidth=5):
 
     bars = plt.bar(indexes, descriptor, width=1.0)
 
-    for i, bar in enumerate(bars):
+    for i, b in enumerate(bars):
         orientation = i % ncategories
 
         color = dict_names[orientation][1]
-        bar.set_facecolor(color)
+        b.set_facecolor(color)
 
         if i < ncategories:
             label = dict_names[orientation][0]
-            bar.set_label(label)
+            b.set_label(label)
 
     ax.legend(bbox_to_anchor=(1.01, 1), loc=2, borderaxespad=0.0)
     ax.set_ylabel("Bin value")
@@ -67,7 +70,7 @@ def plot_descriptor(descriptor, dict_names, figwidth=5):
     plt.show()
 
 
-def __bgr2rgb(image):
+def _bgr2rgb(image):
     if len(image.shape) == 3 and image.shape[2] == 3:
         return image[..., ::-1]
     return image
