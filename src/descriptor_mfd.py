@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-import util.gabor_functions as gf
+import src.gabor_functions as gf
 
 
 class MFD():

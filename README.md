@@ -1,7 +1,6 @@
-MFD (Multispectral Feature Descriptor)
-===============
+# Multispectral Feature Descriptor (MFD)
 
-This is the Python implementation of the algorithm MFD (Multispectral Feature Descriptor), as described in the paper "A Local Feature Descriptor Based on Log-Gabor Filters for Keypoint Matching in Multispectral Images".
+This is the Python implementation of the Multispectral Feature Descriptor (MFD), as described in the paper "A Local Feature Descriptor Based on Log-Gabor Filters for Keypoint Matching in Multispectral Images".
 
 Click [here](https://github.com/cfgnunes/mfd/blob/master/MatchingExample.ipynb) to see a example.
 
