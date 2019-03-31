@@ -6,7 +6,7 @@ This is the Python implementation of the Multispectral Feature Descriptor (MFD),
 
 ## Paper abstract
 
-> This letter presents a new local feature descriptor for problems related to multispectral images.
+This letter presents a new local feature descriptor for problems related to multispectral images.
 Most previous approaches are typically based on descriptors designed to work with images uniquely captured in the visible light spectrum.
 In contrast, this letter proposes a descriptor termed Multispectral Feature Descriptor (MFD) that is especially developed, such that it can be employed with image data acquired at different frequencies across the electromagnetic spectrum.
 The performance of the MFD is evaluated by using three data sets composed of images obtained in visible light and infrared spectra, and its performance is compared with those of state-of-the-art algorithms, such as edge-oriented histogram (EOH) and log-Gabor histogram descriptor (LGHD).
