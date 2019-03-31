@@ -10,7 +10,7 @@ import numpy as np
 def get_gabor_kernel(ksize, sigma, theta, lambd, gamma, psi, ktype=np.float):
     '''
     Returns Gabor filter coefficients.
-    Implementation by: Cristiano Fraga G. Nunes <cfgnunes@gmail.com>.
+    Implementation by: Cristiano Nunes <cfgnunes@gmail.com>.
 
     ksize: Size of the filter returned.
     sigma: Standard deviation of the gaussian envelope.
@@ -58,7 +58,7 @@ def get_log_gabor_kernel(ksize, f0, theta0, sigma_over_f, sigma_theta0,
                          ktype=np.float):
     '''
     Returns Log-Gabor filter coefficients.
-    Implementation by: Cristiano Fraga G. Nunes <cfgnunes@gmail.com>.
+    Implementation by: Cristiano Nunes <cfgnunes@gmail.com>.
 
     ksize: Size of the filter returned.
     f0: The center frequency of the filter.
@@ -135,7 +135,7 @@ def get_log_gabor_kernel(ksize, f0, theta0, sigma_over_f, sigma_theta0,
 def _low_pass_filter(fsize, cutoff, n, ktype=np.float):
     '''
     Returns a low-pass butterworth filter.
-    Implementation by: Cristiano Fraga G. Nunes <cfgnunes@gmail.com>.
+    Implementation by: Cristiano Nunes <cfgnunes@gmail.com>.
 
     fsize: Size of the filter returned.
     cutoff: is the cutoff frequency of the filter (0.0 to 0.5).
@@ -171,7 +171,7 @@ def get_gabor_filterbank(ksize, n_scales, n_orientations, min_sigma=1.0,
                          ktype=np.float):
     '''
     Returns a Gabor filter bank.
-    Implementation by: Cristiano Fraga G. Nunes <cfgnunes@gmail.com>.
+    Implementation by: Cristiano Nunes <cfgnunes@gmail.com>.
 
     ksize: Size of the filters.
     n_scales: Number of scales.
@@ -204,7 +204,7 @@ def get_log_gabor_filterbank(ksize, n_scales, n_orientations,
                              ktype=np.float):
     '''
     Returns a Log-Gabor filter bank.
-    Implementation by: Cristiano Fraga G. Nunes <cfgnunes@gmail.com>.
+    Implementation by: Cristiano Nunes <cfgnunes@gmail.com>.
 
     ksize: Size of the filters.
     n_scales: Number of scales.

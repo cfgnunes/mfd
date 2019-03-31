@@ -11,7 +11,7 @@ class MFD():
        "A Local Feature Descriptor Based on Log-Gabor Filters
        for Keypoint Matching in Multispectral Images"
     Authors:
-        Cristiano Fraga G. Nunes <cfgnunes@gmail.com>
+        Cristiano Nunes <cfgnunes@gmail.com>
         Flavio Luis Cardeal Padua <cardeal@decom.cefetmg.br>
 
     Input image should be a single-band image,

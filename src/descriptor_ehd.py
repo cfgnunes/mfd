@@ -4,7 +4,7 @@ import numpy as np
 
 class EHD():
     '''
-    Python implementation by: Cristiano Fraga G. Nunes <cfgnunes@gmail.com>
+    Python implementation by: Cristiano Nunes <cfgnunes@gmail.com>
     Original MATLAB source code: https://github.com/ngunsu/matlab-eoh-sift
     Described in the papers [1] and [2].
 
