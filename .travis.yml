@@ -1,0 +1,19 @@
+language: python
+
+dist: xenial
+
+python:
+  - "3.5"
+
+# Command to install dependencies
+install:
+  - pip3 install --user --upgrade pip
+  - pip3 install --user --upgrade --requirement "requirements.txt"
+
+# Command to run tests
+script:
+  - jupyter nbconvert --to notebook --inplace --execute "DescriptorEHD.ipynb"
+  - jupyter nbconvert --to notebook --inplace --execute "DescriptorEOH.ipynb"
+  - jupyter nbconvert --to notebook --inplace --execute "DescriptorMFD.ipynb"
+  - jupyter nbconvert --to notebook --inplace --execute "GaborFunctions.ipynb"
+  - jupyter nbconvert --to notebook --inplace --execute "MatchingExample.ipynb"
