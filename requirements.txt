@@ -7,5 +7,4 @@ pandas==0.24.2
 Pillow==5.4.1
 
 # IDEs
-ipython==7.4.0
 jupyter==1.0.0
