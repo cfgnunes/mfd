@@ -12,8 +12,4 @@ install:
 
 # Command to run tests
 script:
-  - jupyter nbconvert --to notebook --inplace --execute "DescriptorEHD.ipynb"
-  - jupyter nbconvert --to notebook --inplace --execute "DescriptorEOH.ipynb"
-  - jupyter nbconvert --to notebook --inplace --execute "DescriptorMFD.ipynb"
-  - jupyter nbconvert --to notebook --inplace --execute "GaborFunctions.ipynb"
-  - jupyter nbconvert --to notebook --inplace --execute "MatchingExample.ipynb"
+  - jupyter nbconvert --to notebook --inplace --execute *.ipynb
