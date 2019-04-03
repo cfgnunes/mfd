@@ -39,15 +39,15 @@ def get_gabor_kernel(ksize, sigma, theta, lambd, gamma, psi, ktype=np.float):
     for i in range(height):
         for j in range(width):
             # Use symmetric references
-            i, j = i - half_height, j - half_width
+            i_s, j_s = i - half_height, j - half_width
 
             # Rotate the filter
-            j_r = j * costheta + i * sintheta
-            i_r = -j * sintheta + i * costheta
+            j_sr = j_s * costheta + i_s * sintheta
+            i_sr = -j_s * sintheta + i_s * costheta
 
             # Gabor equation
-            value = np.exp(const_x * j_r * j_r + const_y * i_r * i_r) * \
-                np.cos(const_scale * j_r + psi)
+            value = np.exp(const_x * j_sr * j_sr + const_y * i_sr * i_sr) * \
+                np.cos(const_scale * j_sr + psi)
 
             kernel.itemset(i, j, value)
 
