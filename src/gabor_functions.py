@@ -39,15 +39,15 @@ def get_gabor_kernel(ksize, sigma, theta, lambd, gamma, psi, ktype=np.float):
     for i in range(height):
         for j in range(width):
             # Use symmetric references
-            i_s, j_s = i - half_height, j - half_width
+            y_c, x_c = i - half_height, j - half_width
 
             # Rotate the filter
-            j_sr = j_s * costheta + i_s * sintheta
-            i_sr = -j_s * sintheta + i_s * costheta
+            x_r = x_c * costheta + y_c * sintheta
+            y_r = -x_c * sintheta + y_c * costheta
 
             # Gabor equation
-            value = np.exp(const_x * j_sr * j_sr + const_y * i_sr * i_sr) * \
-                np.cos(const_scale * j_sr + psi)
+            value = np.exp(const_x * x_r * x_r + const_y * y_r * y_r) * \
+                np.cos(const_scale * x_r + psi)
 
             kernel.itemset(i, j, value)
 
@@ -103,9 +103,9 @@ def get_log_gabor_kernel(ksize, freq0, theta0, sigma_over_f, sigma_theta0,
     sintheta = np.sin(theta)
     costheta = np.cos(theta)
 
-    angl = theta0
-    sinangl = np.sin(angl)
-    cosangl = np.cos(angl)
+    ang = theta0
+    sinang = np.sin(ang)
+    cosang = np.cos(ang)
 
     # For each point in the filter matrix
     # calculate the angular distance from the
@@ -115,8 +115,8 @@ def get_log_gabor_kernel(ksize, freq0, theta0, sigma_over_f, sigma_theta0,
     # first computed and then the atan2 function
     # is used to determine angular distance.
 
-    dif_sin = sintheta * cosangl - costheta * sinangl  # Difference in sine.
-    dif_cos = costheta * cosangl + sintheta * sinangl  # Difference in cosine.
+    dif_sin = sintheta * cosang - costheta * sinang  # Difference in sine.
+    dif_cos = costheta * cosang + sintheta * sinang  # Difference in cosine.
     dtheta = abs(np.arctan2(dif_sin, dif_cos))  # Absolute angular distance.
 
     # Log-Gabor equation: angular component
