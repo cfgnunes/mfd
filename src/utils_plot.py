@@ -24,20 +24,20 @@ def plot_image_list(image_list, title_list=None, ncols=2, scale_factor=2.0,
     size_height = scale_factor * nrows
 
     fig = plt.figure(figsize=(size_width, size_height))
-    gs = gridspec.GridSpec(
+    grid = gridspec.GridSpec(
         ncols=ncols, nrows=nrows, wspace=wspace, hspace=hspace)
 
     for i, image in enumerate(image_list):
-        ax = fig.add_subplot(gs[i])
-        ax.axis('off')
+        ax_plot = fig.add_subplot(grid[i])
+        ax_plot.axis('off')
 
         if bgr_image:
             image = _bgr2rgb(image)
 
-        ax.imshow(image, cmap='gray')
+        ax_plot.imshow(image, cmap='gray')
 
         if title_list:
-            ax.set_title(title_list[i])
+            ax_plot.set_title(title_list[i])
 
     plt.show()
 
@@ -47,24 +47,24 @@ def plot_descriptor(descriptor, dict_names, figwidth=5):
     size = len(descriptor)
     indexes = range(0, size)
 
-    fig, ax = plt.subplots()
+    fig, ax_plot = plt.subplots()
     fig.set_figwidth(figwidth)
 
     bars = plt.bar(indexes, descriptor, width=1.0)
 
-    for i, b in enumerate(bars):
+    for i, bar_plot in enumerate(bars):
         orientation = i % ncategories
 
         color = dict_names[orientation][1]
-        b.set_facecolor(color)
+        bar_plot.set_facecolor(color)
 
         if i < ncategories:
             label = dict_names[orientation][0]
-            b.set_label(label)
+            bar_plot.set_label(label)
 
-    ax.legend(bbox_to_anchor=(1.01, 1), loc=2, borderaxespad=0.0)
-    ax.set_ylabel("Bin value")
-    ax.set_title("Final descriptor (%i bins)" % size)
+    ax_plot.legend(bbox_to_anchor=(1.01, 1), loc=2, borderaxespad=0.0)
+    ax_plot.set_ylabel("Bin value")
+    ax_plot.set_title("Final descriptor (%i bins)" % size)
     plt.xticks(np.arange(0, size + 1, ncategories))
 
     plt.show()

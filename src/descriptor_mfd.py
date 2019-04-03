@@ -31,7 +31,7 @@ class MFD():
         self.window_size = window_size
         self.n_scales = n_scales
         self.n_orientations = n_orientations
-        self._FILTERS = []
+        self._filters = []
         self._nfilters = 0
 
     def descriptor_size(self):
@@ -95,8 +95,8 @@ class MFD():
         filtered_images = np.zeros((image_rows, image_cols, self._nfilters),
                                    np.float32)
 
-        for i, f in enumerate(self._FILTERS):
-            image_edge_f = image_f * np.fft.fftshift(f)
+        for i, fil in enumerate(self._filters):
+            image_edge_f = image_f * np.fft.fftshift(fil)
             image_back = np.fft.ifft2(image_edge_f)
             filtered_images[:, :, i] = np.abs(image_back)
 
@@ -116,13 +116,13 @@ class MFD():
         step = 0
         for i in range(self._N_ROW_REGIONS):
             for j in range(self._N_COL_REGIONS):
-                i1 = i * round(image_rows / self._N_ROW_REGIONS)
-                j1 = j * round(image_cols / self._N_COL_REGIONS)
-                i2 = (i + 1) * round(image_rows / self._N_ROW_REGIONS)
-                j2 = (j + 1) * round(image_cols / self._N_COL_REGIONS)
+                i_1 = i * round(image_rows / self._N_ROW_REGIONS)
+                j_1 = j * round(image_cols / self._N_COL_REGIONS)
+                i_2 = (i + 1) * round(image_rows / self._N_ROW_REGIONS)
+                j_2 = (j + 1) * round(image_cols / self._N_COL_REGIONS)
 
                 # Crop the subregion
-                subregion = maxp[i1:i2, j1:j2]
+                subregion = maxp[i_1:i_2, j_1:j_2]
 
                 # Compute the histogram
                 histogram = cv2.calcHist(
@@ -144,18 +144,18 @@ class MFD():
         half_size = size / 2
 
         # Check the boundaries
-        i1 = np.max((0, i - half_size))
-        i1 = np.min((image_rows, i1 + 1))
-        i2 = np.min((image_rows, i + half_size + 1))
+        i_1 = np.max((0, i - half_size))
+        i_1 = np.min((image_rows, i_1 + 1))
+        i_2 = np.min((image_rows, i + half_size + 1))
 
-        j1 = np.max((0, j - half_size))
-        j1 = np.min((image_cols, j1 + 1))
-        j2 = np.min((image_cols, j + half_size + 1))
+        j_1 = np.max((0, j - half_size))
+        j_1 = np.min((image_cols, j_1 + 1))
+        j_2 = np.min((image_cols, j + half_size + 1))
 
-        if i1 == i2 or j1 == j2:
+        if i_1 == i_2 or j_1 == j_2:
             return None
 
-        return image[int(i1):int(i2), int(j1):int(j2)]
+        return image[int(i_1):int(i_2), int(j_1):int(j_2)]
 
     def _initialize_filter_bank(self, ksize):
         # Build a filter bank with a Log-Gabor filters
@@ -172,10 +172,10 @@ class MFD():
         sigma_over_f = 0.65
         sigma_theta = 1
 
-        self._FILTERS = gf.get_log_gabor_filterbank(
+        self._filters = gf.get_log_gabor_filterbank(
             ksize, n_scales, n_orient, min_wavelen, scale_factor,
             sigma_over_f, sigma_theta)
-        self._nfilters = len(self._FILTERS)
+        self._nfilters = len(self._filters)
 
 # References:
 #

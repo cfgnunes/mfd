@@ -38,7 +38,7 @@ class EOH():
     def descriptor_size(self):
         return int(self._N_ROW_REGIONS *
                    self._N_COL_REGIONS *
-                   len(self._FILTERS))
+                   len(self._filters))
 
     @staticmethod
     def descriptor_type():
@@ -93,10 +93,10 @@ class EOH():
         filtered_images = np.zeros((image_rows, image_cols, self._nfilters),
                                    np.float32)
 
-        for i, f in enumerate(self._FILTERS):
+        for i, fil in enumerate(self._filters):
             filtered_images[:, :, i] = np.abs(
                 cv2.filter2D(
-                    src=image_float, ddepth=-1, kernel=f, dst=0,
+                    src=image_float, ddepth=-1, kernel=fil, dst=0,
                     anchor=(-1, -1), delta=0, borderType=cv2.BORDER_CONSTANT))
 
         # Matrix containing the index values of maximum filters responses.
@@ -119,13 +119,13 @@ class EOH():
         step = 0
         for i in range(self._N_ROW_REGIONS):
             for j in range(self._N_COL_REGIONS):
-                i1 = i * round(image_rows / self._N_ROW_REGIONS)
-                j1 = j * round(image_cols / self._N_COL_REGIONS)
-                i2 = (i + 1) * round(image_rows / self._N_ROW_REGIONS)
-                j2 = (j + 1) * round(image_cols / self._N_COL_REGIONS)
+                i_1 = i * round(image_rows / self._N_ROW_REGIONS)
+                j_1 = j * round(image_cols / self._N_COL_REGIONS)
+                i_2 = (i + 1) * round(image_rows / self._N_ROW_REGIONS)
+                j_2 = (j + 1) * round(image_cols / self._N_COL_REGIONS)
 
                 # Crop the subregion
-                subregion = maxp[i1:i2, j1:j2]
+                subregion = maxp[i_1:i_2, j_1:j_2]
 
                 # Compute the histogram
                 histogram = cv2.calcHist(
@@ -147,18 +147,18 @@ class EOH():
         half_size = size / 2
 
         # Check the boundaries
-        i1 = np.max((0, i - half_size))
-        i1 = np.min((image_rows, i1 + 1))
-        i2 = np.min((image_rows, i + half_size + 1))
+        i_1 = np.max((0, i - half_size))
+        i_1 = np.min((image_rows, i_1 + 1))
+        i_2 = np.min((image_rows, i + half_size + 1))
 
-        j1 = np.max((0, j - half_size))
-        j1 = np.min((image_cols, j1 + 1))
-        j2 = np.min((image_cols, j + half_size + 1))
+        j_1 = np.max((0, j - half_size))
+        j_1 = np.min((image_cols, j_1 + 1))
+        j_2 = np.min((image_cols, j + half_size + 1))
 
-        if i1 == i2 or j1 == j2:
+        if i_1 == i_2 or j_1 == j_2:
             return None
 
-        return image[int(i1):int(i2), int(j1):int(j2)]
+        return image[int(i_1):int(i_2), int(j_1):int(j_2)]
 
     @staticmethod
     def _apply_canny(image):
@@ -178,20 +178,20 @@ class EOH():
 
     def _initialize_filter_bank(self):
         # Build a filter bank with Sobel filters
-        f1 = [[1, 2, 1], [0, 0, 0], [-1, -2, -1]]  # Horizontal filter
-        f2 = [[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]]  # Vertical filter
-        f3 = [[2, 2, -1], [2, -1, -1], [-1, -1, -1]]  # 45 filter
-        f4 = [[-1, 2, 2], [-1, -1, 2], [-1, -1, -1]]  # 135 filter
-        f5 = [[-1, 0, 1], [0, 0, 0], [1, 0, -1]]  # No orientation filter
+        fil1 = [[1, 2, 1], [0, 0, 0], [-1, -2, -1]]  # Horizontal filter
+        fil2 = [[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]]  # Vertical filter
+        fil3 = [[2, 2, -1], [2, -1, -1], [-1, -1, -1]]  # 45 filter
+        fil4 = [[-1, 2, 2], [-1, -1, 2], [-1, -1, -1]]  # 135 filter
+        fil5 = [[-1, 0, 1], [0, 0, 0], [1, 0, -1]]  # No orientation filter
 
-        self._FILTERS = []
-        self._FILTERS.append(np.array(f1))
-        self._FILTERS.append(np.array(f2))
-        self._FILTERS.append(np.array(f3))
-        self._FILTERS.append(np.array(f4))
-        self._FILTERS.append(np.array(f5))
+        self._filters = []
+        self._filters.append(np.array(fil1))
+        self._filters.append(np.array(fil2))
+        self._filters.append(np.array(fil3))
+        self._filters.append(np.array(fil4))
+        self._filters.append(np.array(fil5))
 
-        self._nfilters = len(self._FILTERS)
+        self._nfilters = len(self._filters)
 
 # References:
 #
