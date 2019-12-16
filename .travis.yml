@@ -1,15 +1,11 @@
 language: python
-
 dist: xenial
-
-python:
-  - "3.5"
-
-# Command to install dependencies
-install:
-  - pip3 install --upgrade pip
-  - pip3 install --upgrade --requirement "requirements.txt"
-
-# Command to run tests
+addons:
+ apt:
+   packages:
+     - make
+     - python3-pip
 script:
-  - jupyter nbconvert --to notebook --inplace --execute *.ipynb
+  - make help
+  - make clean
+  - make test
