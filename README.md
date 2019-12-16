@@ -45,3 +45,21 @@ The experimental results indicate that the computational efficiency of MFD excee
 ![SIFT](screenshots/example_sift.png)
 
 ![MFD](screenshots/example_mfd.png)
+
+## Getting Started
+
+### Prerequisites
+
+This section assumes Ubuntu 14.04 (also tested on Ubuntu 18.04), but the procedure is similar for other Linux distributions. The prerequisites is to install the following packages:
+
+```sh
+sudo apt -y install make python3-pip
+```
+
+### Running the examples
+
+To run the main example, use:
+
+```sh
+make run
+```
