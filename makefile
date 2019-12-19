@@ -7,7 +7,7 @@ PYTHON=$(VENV_DIR)/bin/python
 help:
 	@echo "'make run': Run all examples."
 	@echo "'make venv': Prepare development environment, use only once."
-	@echo "'make test': Test all Jupyter notebooks."
+	@echo "'make test': Test all Jupyter Notebooks."
 	@echo "'make clean': Cleans up generated files."
 	@echo
 
@@ -23,14 +23,14 @@ $(VENV_ACTIVATE):
 	@echo
 
 run: venv
-	@echo "Running Jupyter notebook..."
+	@echo "Running Jupyter Notebook..."
 	@. $(VENV_ACTIVATE); \
 		jupyter notebook --ip='0.0.0.0' MatchingExample.ipynb
 	@echo "Done!"
 	@echo
 
 test: venv
-	@echo "Testing all Jupyter notebooks..."
+	@echo "Testing all Jupyter Notebooks..."
 	@. $(VENV_ACTIVATE); \
 		jupyter nbconvert --to notebook --inplace --execute *.ipynb
 	@echo "Done!"
