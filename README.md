@@ -6,6 +6,10 @@ This is the Python implementation of the Multispectral Feature Descriptor (MFD),
 
 [Click here](https://github.com/cfgnunes/mfd/blob/master/MatchingExample.ipynb) to see a example.
 
+![SIFT](screenshots/example_sift.png)
+
+![MFD](screenshots/example_mfd.png)
+
 ## Paper abstract
 
 This letter presents a new local feature descriptor for problems related to multispectral images.
@@ -39,12 +43,6 @@ The experimental results indicate that the computational efficiency of MFD excee
 
 * Cristiano Fraga Guimarães Nunes (<cfgnunes@gmail.com>)
 * Flávio Luis Cardeal Pádua (<cardeal@cefetmg.br>)
-
-## Examples
-
-![SIFT](screenshots/example_sift.png)
-
-![MFD](screenshots/example_mfd.png)
 
 ## Getting Started
 
