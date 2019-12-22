@@ -1,10 +1,10 @@
 # Main packages
-numpy
-matplotlib
+numpy==1.18.0
+matplotlib==3.0.3
 opencv-python==3.4.2.17
 opencv-contrib-python==3.4.2.17
-pandas
-Pillow
+pandas==0.24.2
+Pillow==6.2.1
 
 # IDEs
-jupyter
+jupyter==1.0.0
