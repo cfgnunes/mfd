@@ -3,7 +3,9 @@ VENV_ACTIVATE=$(VENV_DIR)/bin/activate
 PYTHON=$(VENV_DIR)/bin/python
 REQUIRIMENTS_FILE=requirements.txt
 
-.PHONY: help venv run test clean
+.PHONY: default help venv run test clean
+
+default: run
 
 help:
 	@echo "'make run': Run all examples."
