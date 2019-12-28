@@ -8,10 +8,10 @@ REQUIRIMENTS_FILE=requirements.txt
 default: run
 
 help:
-	@echo "'make run': Run all examples."
-	@echo "'make venv': Prepare development environment, use only once."
-	@echo "'make test': Test all Jupyter Notebooks."
 	@echo "'make clean': Cleans up generated files."
+	@echo "'make run': Run the project."
+	@echo "'make test': Run the tests."
+	@echo "'make venv': Prepare development environment."
 	@echo
 
 venv: $(VENV_ACTIVATE)
@@ -27,14 +27,14 @@ $(VENV_ACTIVATE): $(REQUIRIMENTS_FILE)
 	@echo
 
 run: venv
-	@echo "Running Jupyter Notebook..."
+	@echo "Running the project..."
 	@. $(VENV_ACTIVATE); \
 		jupyter notebook --ip='0.0.0.0' MatchingExample.ipynb
 	@echo "Done!"
 	@echo
 
 test: venv
-	@echo "Testing all Jupyter Notebooks..."
+	@echo "Running the tests..."
 	@. $(VENV_ACTIVATE); \
 		jupyter nbconvert --to notebook --inplace --execute *.ipynb
 	@echo "Done!"
