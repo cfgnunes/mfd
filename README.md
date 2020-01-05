@@ -1,6 +1,4 @@
-# Multispectral Feature Descriptor (MFD)
-
-[![Build Status](https://travis-ci.org/cfgnunes/mfd.svg?branch=master)](https://travis-ci.org/cfgnunes/mfd)
+# Multispectral Feature Descriptor (MFD) [![Build Status](https://travis-ci.org/cfgnunes/mfd.svg?branch=master)](https://travis-ci.org/cfgnunes/mfd)
 
 This is the Python 3 implementation of the Multispectral Feature Descriptor (MFD), as described in the paper "[A Local Feature Descriptor Based on Log-Gabor Filters for Keypoint Matching in Multispectral Images](https://ieeexplore.ieee.org/document/8024177)".
 
@@ -35,14 +33,14 @@ The experimental results indicate that the computational efficiency of MFD excee
 
 ## Datasets used in the paper
 
-* Potsdam: <http://www2.isprs.org/commissions/comm3/wg4/2d-sem-label-potsdam.html>
-* RGB-LWIR: <https://owncloud.cvc.uab.es/owncloud/index.php/s/1Wx715yUh6kDAO7>
-* RGB-NIR: <http://ivrl.epfl.ch/supplementary_material/cvpr11/>
+- Potsdam: <http://www2.isprs.org/commissions/comm3/wg4/2d-sem-label-potsdam.html>
+- RGB-LWIR: <https://owncloud.cvc.uab.es/owncloud/index.php/s/1Wx715yUh6kDAO7>
+- RGB-NIR: <http://ivrl.epfl.ch/supplementary_material/cvpr11/>
 
 ## Authors
 
-* Cristiano Fraga Guimarães Nunes (<cfgnunes@gmail.com>)
-* Flávio Luis Cardeal Pádua (<cardeal@cefetmg.br>)
+- Cristiano Fraga Guimarães Nunes (<cfgnunes@gmail.com>)
+- Flávio Luis Cardeal Pádua (<cardeal@cefetmg.br>)
 
 ## Getting Started
 
