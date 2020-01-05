@@ -7,53 +7,6 @@ import numpy as np
 # http://www.peterkovesi.com/matlabfns/index.html
 
 
-def get_gabor_kernel(ksize, sigma, theta, lambd, gamma, psi, ktype=np.float):
-    '''
-    Returns Gabor filter coefficients.
-    Implementation by: Cristiano Nunes <cfgnunes@gmail.com>.
-
-    ksize: Size of the filter returned.
-    sigma: Standard deviation of the gaussian envelope.
-    theta: Orientation of the normal to the
-           parallel stripes of a Gabor function.
-    lambd: Wavelength of the sinusoidal factor.
-    gamma: Spatial aspect ratio.
-    psi: Phase offset.
-    ktype: Type of filter coefficients (e.g. np.float).
-    '''
-
-    costheta = np.cos(theta)
-    sintheta = np.sin(theta)
-
-    width, height = ksize
-    half_width = int(width / 2)
-    half_height = int(height / 2)
-
-    # Kernel matrix
-    kernel = np.zeros((height, width), ktype)
-
-    const_x = -0.5 / (sigma ** 2)
-    const_y = -0.5 / ((float(sigma) / gamma) ** 2)
-    const_scale = np.pi * 2.0 / lambd
-
-    for i in range(height):
-        for j in range(width):
-            # Use symmetric references
-            y_c, x_c = i - half_height, j - half_width
-
-            # Rotate the filter
-            x_r = x_c * costheta + y_c * sintheta
-            y_r = -x_c * sintheta + y_c * costheta
-
-            # Gabor equation
-            value = np.exp(const_x * x_r * x_r + const_y * y_r * y_r) * \
-                np.cos(const_scale * x_r + psi)
-
-            kernel.itemset(i, j, value)
-
-    return kernel
-
-
 def get_log_gabor_kernel(ksize, freq0, theta0, sigma_over_f, sigma_theta0,
                          ktype=np.float):
     '''
@@ -163,38 +116,6 @@ def _low_pass_filter(fsize, cutoff, order, ktype=np.float):
     fil = 1.0 / (1.0 + (radius / cutoff) ** (2 * order))
 
     return fil
-
-
-def get_gabor_filterbank(ksize, n_scales, n_orientations, min_sigma=1.0,
-                         scale_factor=3, gamma=1.0, psi=np.pi * 0.5,
-                         ktype=np.float):
-    '''
-    Returns a Gabor filter bank.
-    Implementation by: Cristiano Nunes <cfgnunes@gmail.com>.
-
-    ksize: Size of the filters.
-    n_scales: Number of scales.
-    n_orientations: Number of orientations.
-    min_sigma: Sigma of smallest scale filter
-    scale_factor: Scaling factor between successive filters
-    gamma: Spatial aspect ratio of filters.
-    psi: Phase offset of filters.
-    ktype: Type of filter coefficients (e.g. np.float).
-    '''
-
-    filters = []
-
-    for scale in range(n_scales):
-        for orientation in range(n_orientations):
-            sigma = min_sigma + scale
-            lambd = sigma * scale_factor
-            theta = 2 * np.pi * (orientation / float(n_orientations))
-
-            fil = get_gabor_kernel(
-                ksize, sigma, theta, lambd, gamma, psi, ktype)
-            filters.append(fil)
-
-    return filters
 
 
 def get_log_gabor_filterbank(ksize, n_scales, n_orientations,

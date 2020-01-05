@@ -4,9 +4,9 @@ This is the Python 3 implementation of the Multispectral Feature Descriptor (MFD
 
 [Click here](https://github.com/cfgnunes/mfd/blob/master/MatchingExample.ipynb) to see a example.
 
-![SIFT](screenshots/example_sift.png)
+![SIFT](images-sample/example_sift.png)
 
-![MFD](screenshots/example_mfd.png)
+![MFD](images-sample/example_mfd.png)
 
 ## Paper abstract
 
