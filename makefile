@@ -43,7 +43,7 @@ test: venv
 clean:
 	@echo "Cleaning up generated files..."
 	@rm -rf $(VENV_DIR)
-	@rm -rf "__pycache__"
-	@find . -type f \( -iname "*.py[cod]" \) ! -path "./.git/*" -delete
+	@find . -type d -iname "__pycache__" ! -path "./.git/*" -delete
+	@find . -type f -iname "*.py[cod]" ! -path "./.git/*" -delete
 	@echo "Done!"
 	@echo
