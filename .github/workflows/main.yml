@@ -1,0 +1,24 @@
+name: build
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up git repository
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: sudo apt -y install make python3-pip python3-venv
+
+      - name: Run 'make clean' process
+        run: make clean
+
+      - name: Run 'make test' process
+        run: make test
