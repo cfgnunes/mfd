@@ -28,9 +28,8 @@ The experimental results indicate that the computational efficiency of MFD excee
   number    = {10},
   pages     = {1850--1854},
   volume    = {14},
-  comment   = {MFD},
+  comment   = {MFD - Multispectral Feature Descriptor},
   doi       = {10.1109/lgrs.2017.2738632},
-  file      = {:nunes2017local.pdf:PDF},
   publisher = {Institute of Electrical and Electronics Engineers ({IEEE})},
 }
 ```
