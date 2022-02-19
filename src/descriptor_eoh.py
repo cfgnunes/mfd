@@ -36,9 +36,7 @@ class EOH():
         self._initialize_filter_bank()
 
     def descriptor_size(self):
-        return int(self._N_ROW_REGIONS *
-                   self._N_COL_REGIONS *
-                   len(self._filters))
+        return int(self._N_ROW_REGIONS * self._N_COL_REGIONS * self._nfilters)
 
     @staticmethod
     def descriptor_type():
@@ -95,9 +93,7 @@ class EOH():
 
         for i, fil in enumerate(self._filters):
             filtered_images[:, :, i] = np.abs(
-                cv2.filter2D(
-                    src=image_float, ddepth=-1, kernel=fil, dst=0,
-                    anchor=(-1, -1), delta=0, borderType=cv2.BORDER_CONSTANT))
+                cv2.filter2D(src=image_float, ddepth=-1, kernel=fil))
 
         # Matrix containing the index values of maximum filters responses.
         maxp = filtered_images.argmax(2)
