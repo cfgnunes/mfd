@@ -6,6 +6,7 @@ opencv-python-headless
 pandas
 phasepack
 pyfftw
+scipy
 
 # IDEs
 jupyter
