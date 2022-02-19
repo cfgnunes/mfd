@@ -20,14 +20,18 @@ The experimental results indicate that the computational efficiency of MFD excee
 
 ```TeX
 @article{nunes2017local,
-  author  = {Cristiano F. G. Nunes and Flavio L. C. Padua},
-  title   = {A Local Feature Descriptor Based on Log-Gabor Filters for Keypoint Matching in Multispectral Images},
-  journal = {{IEEE} Geoscience and Remote Sensing Letters},
-  year    = {2017},
-  volume  = {14},
-  number  = {10},
-  pages   = {1850--1854},
-  month   = {oct}
+  author    = {Cristiano F. G. Nunes and Fl{\'{a}}vio L. C. P{\'{a}}dua},
+  journal   = {{IEEE} Geoscience and Remote Sensing Letters},
+  title     = {A Local Feature Descriptor Based on Log-Gabor Filters for Keypoint Matching in Multispectral Images},
+  year      = {2017},
+  month     = oct,
+  number    = {10},
+  pages     = {1850--1854},
+  volume    = {14},
+  comment   = {MFD},
+  doi       = {10.1109/lgrs.2017.2738632},
+  file      = {:nunes2017local.pdf:PDF},
+  publisher = {Institute of Electrical and Electronics Engineers ({IEEE})},
 }
 ```
 
