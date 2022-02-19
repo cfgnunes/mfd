@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-import src.gabor_functions as gf
+import phasepack
 
 
 class MFD():
@@ -12,7 +12,7 @@ class MFD():
        for Keypoint Matching in Multispectral Images"
     Authors:
         Cristiano Nunes <cfgnunes@gmail.com>
-        Flavio Luis Cardeal Padua <cardeal@decom.cefetmg.br>
+        Flávio Luis Cardeal Padua <cardeal@decom.cefetmg.br>
 
     Input image should be a single-band image,
     but if it's a multiband (e.g. RGB) image
@@ -32,12 +32,10 @@ class MFD():
         self.n_scales = n_scales
         self.n_orientations = n_orientations
         self._filters = []
-        self._nfilters = 0
+        self._nfilters = n_scales * n_orientations
 
     def descriptor_size(self):
-        return int(self._N_ROW_REGIONS *
-                   self._N_COL_REGIONS *
-                   self.n_scales * self.n_orientations)
+        return int(self._N_ROW_REGIONS * self._N_COL_REGIONS * self._nfilters)
 
     @staticmethod
     def descriptor_type():
@@ -50,7 +48,8 @@ class MFD():
         if not keypoints:
             return None
 
-        maxp = self._apply_filters(image)
+        images_log_gabor = self._apply_filters(image)
+        maxp = self._build_map(images_log_gabor)
 
         descriptors = np.zeros(
             (len(keypoints), self.descriptor_size()), self.descriptor_type())
@@ -71,14 +70,32 @@ class MFD():
 
     # Return the descriptor for a image
     def compute_descriptor(self, image):
-        maxp = self._apply_filters(image)
+        images_log_gabor = self._apply_filters(image)
+        maxp = self._build_map(images_log_gabor)
         descriptor = self._compute_subregions(maxp)
         return descriptor
 
-    # Apply the filters in the image and return a matrix containing
-    # the index values of maximum filters responses.
-    # Each value of this returned matrix represent which filter had a
-    # maximum response for that pixel coordinate.
+    # Return a matrix containing the index values of maximum filters responses.
+    # Each value of this returned matrix represent which filter had a maximum
+    # response for that pixel coordinate.
+    def _build_map(self, images_log_gabor):
+        image_rows, image_cols = images_log_gabor[0][0].shape
+        images_array = np.zeros(
+            (image_rows, image_cols, self._nfilters), np.float32)
+
+        i = 0
+        for s in range(self.n_scales):
+            for o in range(self.n_orientations):
+                # Compute the absolute values
+                images_array[:, :, i] = np.abs(images_log_gabor[o][s])
+                i = i + 1
+
+        maxp = images_array.argmax(2)
+        maxp += 1
+
+        return maxp
+
+    # Apply the filters in the image
     def _apply_filters(self, image):
         if image.size == 0:
             return None
@@ -86,25 +103,22 @@ class MFD():
         if image.dtype != np.uint8:
             image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-        image_rows, image_cols = image.shape
-        image_float = image.copy().astype(np.float32)
-        image_f = np.fft.fft2(image_float)
+        # The values of the parameters for the log-Gabor
+        # filters were defined as suggested in a previous
+        # study [2], because they demonstrated good results
+        # in texture extraction when log-Gabor filters were
+        # used for image descriptions.
+        min_wavelen = 3
+        scale_factor = 2
+        sigma_on_f = 0.65
 
-        self._initialize_filter_bank((image_cols, image_rows))
+        # Build a filter bank with a Log-Gabor filters
+        _, _, _, _, _, images_filtered, _ = phasepack.phasecong(
+            image, nscale=self.n_scales, norient=self.n_orientations,
+            minWaveLength=min_wavelen, mult=scale_factor, sigmaOnf=sigma_on_f,
+            k=2.0, g=3)
 
-        filtered_images = np.zeros((image_rows, image_cols, self._nfilters),
-                                   np.float32)
-
-        for i, fil in enumerate(self._filters):
-            image_edge_f = image_f * np.fft.fftshift(fil)
-            image_back = np.fft.ifft2(image_edge_f)
-            filtered_images[:, :, i] = np.abs(image_back)
-
-        # Matrix containing the index values of maximum filters responses.
-        maxp = filtered_images.argmax(2)
-        maxp += 1
-
-        return maxp
+        return images_filtered
 
     # Compute the histogram for each subregion and return the descriptor.
     # Every pixel of each subregion contributes to a bin on
@@ -157,29 +171,9 @@ class MFD():
 
         return image[int(i_1):int(i_2), int(j_1):int(j_2)]
 
-    def _initialize_filter_bank(self, ksize):
-        # Build a filter bank with a Log-Gabor filters
-        n_scales = self.n_scales
-        n_orient = self.n_orientations
-
-        # The values of the parameters for the log-Gabor
-        # filters were defined as suggested in a previous
-        # study [2], because they demonstrated good results
-        # in texture extraction when log-Gabor filters were
-        # used for image descriptions.
-        min_wavelen = 3
-        scale_factor = 2
-        sigma_over_f = 0.65
-        sigma_theta = 1
-
-        self._filters = gf.get_log_gabor_filterbank(
-            ksize, n_scales, n_orient, min_wavelen, scale_factor,
-            sigma_over_f, sigma_theta)
-        self._nfilters = len(self._filters)
-
 # References:
 #
-# [1] Nunes, Cristiano FG, and Flavio LC Padua. "A Local Feature Descriptor
+# [1] Nunes, Cristiano FG, and Flávio LC Padua. "A Local Feature Descriptor
 # Based on Log-Gabor Filters for Keypoint Matching in Multispectral Images."
 # IEEE Geoscience and Remote Sensing Letters 14.10 (2017): 1850-1854.
 #

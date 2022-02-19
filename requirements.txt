@@ -1,9 +1,11 @@
 # Main packages
-numpy
 matplotlib
-opencv-python
-opencv-contrib-python
+numpy
+opencv-contrib-python-headless
+opencv-python-headless
 pandas
+phasepack
+pyfftw
 
 # IDEs
 jupyter
