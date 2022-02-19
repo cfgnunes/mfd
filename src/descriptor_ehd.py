@@ -174,5 +174,5 @@ class EHD():
 # Conference on Computer Analysis of Images and Patterns. Springer,
 # Berlin, Heidelberg, 2001.
 #
-# [2] Won, Chee Sun, Dong Kwon Park, and Soo‐Jun Park. "Efficient Use
-# of MPEG‐7 Edge Histogram Descriptor." ETRI journal 24.1 (2002): 23-30.
+# [2] Won, Chee Sun, Dong Kwon Park, and Soo-Jun Park. "Efficient Use
+# of MPEG-7 Edge Histogram Descriptor." ETRI journal 24.1 (2002): 23-30.
