@@ -1,158 +1,196 @@
-import cv2
+'''
+MFD (Multiespectral Feature Descriptor)
+
+Python implementation by the author: Cristiano Nunes <cfgnunes@gmail.com>
+See the paper [1].
+'''
+
 import numpy as np
 import phasepack
 
 
 class MFD():
     '''
-    Extract the MFD (Multiespectral Feature Descriptor) descriptor
-
-    Paper [1]:
-       "A Local Feature Descriptor Based on Log-Gabor Filters
-       for Keypoint Matching in Multispectral Images"
-    Authors:
-        Cristiano Nunes <cfgnunes@gmail.com>
-        Flávio Luis Cardeal Padua <cardeal@decom.cefetmg.br>
-
-    Input image should be a single-band image,
-    but if it's a multiband (e.g. RGB) image
-    only the 1st band will be used.
-
-    The output descriptor is a array with 4x4x2x5=160 values.
-
-    The image is split into 4x4 non-overlapping rectangular regions.
-    For each region, 10 (2x5) Log-Gabor filter is computed.
+    Compute the MFD (Multiespectral Feature Descriptor).
     '''
 
-    _N_ROW_REGIONS = 4
-    _N_COL_REGIONS = 4
+    _N_SUB_REGIONS = 4  # Number of SxS subregions
 
-    def __init__(self, window_size=80, n_scales=2, n_orientations=5):
-        self.window_size = window_size
-        self.n_scales = n_scales
-        self.n_orientations = n_orientations
-        self._filters = []
-        self._nfilters = n_scales * n_orientations
+    def __init__(self, window_size=80, n_scales=2, n_orient=5):
+        self._window_size = window_size
+        self._n_scales = n_scales
+        self._n_orient = n_orient
+        self._n_filters = n_scales * n_orient
 
-    def descriptor_size(self):
-        return int(self._N_ROW_REGIONS * self._N_COL_REGIONS * self._nfilters)
-
-    @staticmethod
-    def descriptor_type():
-        return np.float32
-
-    # Return a list of descriptors for each region around all keypoints.
-    # The size of the region is defined by "window_size".
     def compute(self, image, keypoints):
+        """Compute the descriptor for each keypoint.
+
+        Args:
+            image (ndarray): input image.
+            keypoints (ndarray): keypoints.
+
+        Returns:
+            list of ndarray: descriptors for each keypoint.
+        """
 
         if not keypoints:
             return None
 
-        images_log_gabor = self._apply_filters(image)
-        maxp = self._build_map(images_log_gabor)
-
         descriptors = np.zeros(
             (len(keypoints), self.descriptor_size()), self.descriptor_type())
 
-        for i, k in enumerate(keypoints):
-            # Crop a region (window_size X window_size)
-            # around the keypoint
-            window_maxp = self._crop_region(
-                maxp, (k.pt[1], k.pt[0]), self.window_size)
+        # Apply the Log-Gabor filters in the input image
+        image_responses = self._apply_log_gabor_filters(image)
 
-            if window_maxp is None:
+        # Compute the 'Maximum Index Map'
+        mim = self._compute_maximum_index_map(np.vstack(image_responses))
+
+        # Compute the descriptor for each keypoint
+        for i, keypoint in enumerate(keypoints):
+
+            # Crop a window image around the keypoint
+            mim_window = self._crop_window(
+                mim, (keypoint.pt[1], keypoint.pt[0]), self._window_size)
+
+            if mim_window is None:
                 continue
 
-            # Compute the descriptor for this region
-            descriptors[i] = self._compute_subregions(window_maxp)
+            # Compute the histogram for all subregions
+            histograms_window = self._compute_histogram_subregions(
+                mim_window, self._n_filters, self._N_SUB_REGIONS)
 
-        return keypoints, descriptors
+            # Concatenate all histograms in a single array
+            histogram = np.concatenate(histograms_window)
 
-    # Return the descriptor for a image
-    def compute_descriptor(self, image):
-        images_log_gabor = self._apply_filters(image)
-        maxp = self._build_map(images_log_gabor)
-        descriptor = self._compute_subregions(maxp)
-        return descriptor
+            # Normalize the histogram to unit length
+            histogram = histogram / np.linalg.norm(histogram)
 
-    # Return a matrix containing the index values of maximum filters responses.
-    # Each value of this returned matrix represent which filter had a maximum
-    # response for that pixel coordinate.
-    def _build_map(self, images_log_gabor):
-        image_rows, image_cols = images_log_gabor[0][0].shape
-        images_array = np.zeros(
-            (image_rows, image_cols, self._nfilters), np.float32)
+            descriptors[i] = histogram
 
-        i = 0
-        for s in range(self.n_scales):
-            for o in range(self.n_orientations):
-                # Compute the absolute values
-                images_array[:, :, i] = np.abs(images_log_gabor[o][s])
-                i = i + 1
+        return keypoints, np.array(descriptors)
 
-        maxp = images_array.argmax(2)
-        maxp += 1
+    def descriptor_size(self):
+        """Get the size of the descriptor.
 
-        return maxp
+        Returns:
+            int: the size of the descriptor.
+        """
+        return int(self._N_SUB_REGIONS * self._N_SUB_REGIONS * self._n_filters)
 
-    # Apply the filters in the image
-    def _apply_filters(self, image):
-        if image.size == 0:
-            return None
+    @staticmethod
+    def descriptor_type():
+        """Get the type of the descriptor.
 
-        if image.dtype != np.uint8:
-            image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        Returns:
+            float: the type of the descriptor.
+        """
+        return np.float32
 
-        # The values of the parameters for the log-Gabor
-        # filters were defined as suggested in a previous
-        # study [2], because they demonstrated good results
-        # in texture extraction when log-Gabor filters were
-        # used for image descriptions.
+    def _apply_log_gabor_filters(self, image):
+        """Apply the log-Gabor filters in the input image.
+
+        Args:
+            image (ndarray): input image.
+
+        Returns:
+            ndarray: image responses to Log-Gabor filters.
+                     Shape: (Scales X Orientations X Rows X Cols).
+        """
+
+        # The values of the parameters for the log-Gabor filters were defined as
+        # suggested in a previous study [2], because they demonstrated good
+        # results in texture extraction when Log-Gabor filters were used for
+        # image description.
         min_wavelen = 3
         scale_factor = 2
         sigma_on_f = 0.65
 
-        # Build a filter bank with a Log-Gabor filters
-        _, _, _, _, _, images_filtered, _ = phasepack.phasecong(
-            image, nscale=self.n_scales, norient=self.n_orientations,
-            minWaveLength=min_wavelen, mult=scale_factor, sigmaOnf=sigma_on_f,
-            k=2.0, g=3)
+        # Build a filter bank with Log-Gabor filters
+        _, _, _, _, _, image_responses, _ = phasepack.phasecong(
+            image, nscale=self._n_scales, norient=self._n_orient,
+            minWaveLength=min_wavelen, mult=scale_factor,
+            sigmaOnf=sigma_on_f, k=2.0, g=3)
 
-        return images_filtered
+        # Compute the magnitude (absolute values) of the image responses
+        image_responses = np.abs(image_responses)
 
-    # Compute the histogram for each subregion and return the descriptor.
-    # Every pixel of each subregion contributes to a bin on
-    # the histogram according to the filters.
-    def _compute_subregions(self, maxp):
-        descriptor = np.zeros(self.descriptor_size(), self.descriptor_type())
-        image_rows, image_cols = maxp.shape
+        # Convert list of lists in a single array
+        image_responses_array = np.swapaxes(image_responses, 0, 1)
 
-        step = 0
-        for i in range(self._N_ROW_REGIONS):
-            for j in range(self._N_COL_REGIONS):
-                i_1 = i * round(image_rows / self._N_ROW_REGIONS)
-                j_1 = j * round(image_cols / self._N_COL_REGIONS)
-                i_2 = (i + 1) * round(image_rows / self._N_ROW_REGIONS)
-                j_2 = (j + 1) * round(image_cols / self._N_COL_REGIONS)
+        return image_responses_array
 
-                # Crop the subregion
-                subregion = maxp[i_1:i_2, j_1:j_2]
-
-                # Compute the histogram
-                histogram = cv2.calcHist(
-                    images=[subregion.astype(np.uint8)], channels=None,
-                    mask=None, histSize=[self._nfilters],
-                    ranges=[1, self._nfilters + 1])
-                descriptor[step:(step + self._nfilters)] = histogram.T
-                step += self._nfilters
-
-        # Normalize the final descriptor
-        cv2.normalize(descriptor, descriptor)
-        return descriptor
-
-    # Crop a region of (size X size) centered around a center reference
     @staticmethod
-    def _crop_region(image, center, size):
+    def _compute_maximum_index_map(images):
+        """Compute the 'Maximum Index Map': matrix containing the index values
+        of maximum filters responses. Each value of this matrix represent which
+        filter had a maximum response for that pixel coordinate.
+
+        Args:
+            images (ndarray): a list of images.
+                              Shape: (Filters X Rows X Cols).
+
+        Returns:
+            ndarray: matrix containing the index values of maximum filters
+                     responses (Maximum Index Map).
+                     Shape: (Rows X Cols).
+        """
+
+        # Compute the argmax
+        maximum_index_map = np.argmax(images, axis=0)
+        maximum_index_map += 1
+
+        return maximum_index_map
+
+    @staticmethod
+    def _compute_histogram_subregions(image, n_bins, n_subregions):
+        """Split a image into subregions and compute its histograms.
+
+        Args:
+            image (ndarray): input image.
+            n_bins (int): number of bins in the histogram.
+            n_subregions (int): number of SxS subregions.
+
+        Returns:
+            list of ndarray: list of histogram for each subregion.
+        """
+
+        histograms = []
+        image_rows, image_cols = image.shape
+
+        # Note: splitting the window into subregions keeps significant spatial
+        # information in the final descriptor.
+        for i in range(n_subregions):
+            for j in range(n_subregions):
+                i_1 = i * round(image_rows / n_subregions)
+                j_1 = j * round(image_cols / n_subregions)
+                i_2 = (i + 1) * round(image_rows / n_subregions)
+                j_2 = (j + 1) * round(image_cols / n_subregions)
+
+                # Crop a subregion from the 'Maximum Index Map'
+                subregion = image[i_1:i_2, j_1:j_2]
+
+                # Compute the histogram for the subregion
+                histogram, _ = np.histogram(subregion.astype(np.uint8),
+                                            bins=n_bins, range=[1, n_bins + 1])
+
+                # Add the histogram of the subregion to the histogram list
+                histograms.append(histogram)
+
+        return histograms
+
+    @staticmethod
+    def _crop_window(image, center, size):
+        """Crop a squared window from a image.
+
+        Args:
+            image (ndarray): input image.
+            center ((int, int)): coordinates of the window's center.
+            size (int): squared size of the window.
+
+        Returns:
+            ndarray: output window image.
+        """
+
         image_rows, image_cols = image.shape
         i, j = center
         half_size = size / 2
@@ -171,12 +209,15 @@ class MFD():
 
         return image[int(i_1):int(i_2), int(j_1):int(j_2)]
 
+
 # References:
 #
-# [1] Nunes, Cristiano FG, and Flávio LC Padua. "A Local Feature Descriptor
-# Based on Log-Gabor Filters for Keypoint Matching in Multispectral Images."
-# IEEE Geoscience and Remote Sensing Letters 14.10 (2017): 1850-1854.
+# [1] C. F. G. Nunes and F. L. C. Pádua, "A local feature descriptor based on
+# log-gabor filters for keypoint matching in multispectral images," IEEE
+# Geoscience and Remote Sensing Letters, vol. 14, no. 10, pp. 1850-1854, Oct.
+# 2017, DOI: 10.1109/lgrs.2017.2738632.
 #
-# [2] Walia, Ekta, and Vishal Verma. "Boosting local texture descriptors with
-# Log-Gabor filters response for improved image retrieval." International
-# Journal of Multimedia Information Retrieval 5.3 (2016): 173-184.
+# [2] E. Walia and V. Verma, "Boosting local texture descriptors with log-gabor
+# filters response for improved image retrieval," International Journal of
+# Multimedia Information Retrieval, vol. 5, no. 3, pp. 173–184, apr 2016, DOI:
+# 10.1007/s13735-016-0099-2.
