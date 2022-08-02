@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v2.4.0
 
       - name: Install dependencies
-        run: sudo apt -y install make python3-pip python3-venv
+        run: sudo apt-get -y install make python3-pip python3-venv
 
       - name: Run 'make clean' process
         run: make clean
