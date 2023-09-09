@@ -36,9 +36,9 @@ The experimental results indicate that the computational efficiency of MFD excee
 
 ## Datasets used in the paper
 
-- Potsdam: <http://www2.isprs.org/commissions/comm3/wg4/2d-sem-label-potsdam.html>
+- Potsdam: <https://www.isprs.org/education/benchmarks/UrbanSemLab/2d-sem-label-potsdam.aspx>
 - RGB-LWIR: <https://owncloud.cvc.uab.es/owncloud/index.php/s/1Wx715yUh6kDAO7>
-- RGB-NIR: <http://ivrl.epfl.ch/supplementary_material/cvpr11/>
+- RGB-NIR: <https://ivrlwww.epfl.ch/supplementary_material/cvpr11/index.html>
 
 ## Authors
 
