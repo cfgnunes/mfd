@@ -49,7 +49,7 @@ The experimental results indicate that the computational efficiency of MFD excee
 
 ### Prerequisites
 
-This section assumes Ubuntu 16.04 (also tested on Ubuntu 20.04), but the procedure is similar for other Linux distributions. The prerequisites is to install the following packages:
+This section assumes Ubuntu 16.04 (also tested on Ubuntu 22.04), but the procedure is similar for other Linux distributions. The prerequisites is to install the following packages:
 
 ```sh
 sudo apt -y install make python3-pip python3-venv
