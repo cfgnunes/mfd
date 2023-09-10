@@ -1,6 +1,6 @@
 # Multispectral Feature Descriptor (MFD) [![Actions Status](https://github.com/cfgnunes/mfd/workflows/build/badge.svg)](https://github.com/cfgnunes/mfd/actions)
 
-This is the Python 3 implementation of the Multispectral Feature Descriptor (MFD), as described in the paper "[A Local Feature Descriptor Based on Log-Gabor Filters for Keypoint Matching in Multispectral Images](https://ieeexplore.ieee.org/document/8024177)".
+This is the Python implementation of the Multispectral Feature Descriptor (MFD), as described in the paper "[A Local Feature Descriptor Based on Log-Gabor Filters for Keypoint Matching in Multispectral Images](https://ieeexplore.ieee.org/document/8024177)".
 
 [Click here](https://github.com/cfgnunes/mfd/blob/master/MatchingExample.ipynb) to see a example.
 
