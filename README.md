@@ -40,12 +40,6 @@ In contrast, this letter proposes a descriptor termed Multispectral Feature Desc
 The performance of the MFD is evaluated by using three data sets composed of images obtained in visible light and infrared spectra, and its performance is compared with those of state-of-the-art algorithms, such as edge-oriented histogram (EOH) and log-Gabor histogram descriptor (LGHD).
 The experimental results indicate that the computational efficiency of MFD exceeds those of EOH and LGHD, and that the precision and recall values of MFD are statistically comparable to the corresponding values of the forementioned algorithms.
 
-## Datasets used in the paper
-
-- Potsdam: <https://www.isprs.org/education/benchmarks/UrbanSemLab/2d-sem-label-potsdam.aspx>
-- RGB-LWIR: <https://owncloud.cvc.uab.es/owncloud/index.php/s/1Wx715yUh6kDAO7>
-- RGB-NIR: <https://ivrlwww.epfl.ch/supplementary_material/cvpr11/index.html>
-
 ## Bibtex
 
 ```TeX
@@ -63,3 +57,9 @@ The experimental results indicate that the computational efficiency of MFD excee
   publisher = {Institute of Electrical and Electronics Engineers ({IEEE})},
 }
 ```
+
+## Datasets used in the paper
+
+- Potsdam: <https://www.isprs.org/resources/datasets/benchmarks/UrbanSemLab/2d-sem-label-potsdam.aspx>
+- RGB-LWIR: <https://owncloud.cvc.uab.es/owncloud/index.php/s/1Wx715yUh6kDAO7>
+- RGB-NIR: <https://ivrlwww.epfl.ch/supplementary_material/cvpr11/index.html>
