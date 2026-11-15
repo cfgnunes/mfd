@@ -11,8 +11,7 @@ This is the Python implementation of the Multispectral Feature Descriptor (MFD),
 ## Getting started
 
 ### Requirements
-- Python 3.6
-- [Miniconda](https://docs.conda.io) (recommended)
+- [Miniconda](https://docs.conda.io) (Python environment)
 
 ### Run the example
 
