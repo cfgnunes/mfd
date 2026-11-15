@@ -1,12 +1,36 @@
-# MFD - Multispectral Feature Descriptor [![Actions Status](https://github.com/cfgnunes/mfd/workflows/build/badge.svg)](https://github.com/cfgnunes/mfd/actions)
+# MFD - Multispectral Feature Descriptor
 
 This is the Python implementation of the Multispectral Feature Descriptor (MFD), as described in the paper "[A Local Feature Descriptor Based on Log-Gabor Filters for Keypoint Matching in Multispectral Images](https://ieeexplore.ieee.org/document/8024177)".
 
-[Click here](https://github.com/cfgnunes/mfd/blob/master/MatchingExample.ipynb) to see a example.
+[Click here](https://github.com/cfgnunes/mfd/blob/main/MatchingExample.ipynb) to see a example.
 
 ![SIFT](images-sample/example_sift.png)
 
 ![MFD](images-sample/example_mfd.png)
+
+## Getting Started
+
+### Requirements
+- Python 3.6
+- [Miniconda](https://docs.conda.io) (recommended)
+
+### Run the example
+
+```bash
+# 1. Create the environment.
+conda env create
+
+# 2. Activate the environment.
+conda activate mfd
+
+# 3. Open the example notebook.
+jupyter notebook MatchingExample.ipynb
+```
+
+## Authors
+
+- Cristiano Fraga G. Nunes (<cfgnunes@gmail.com>)
+- Flávio Luis Cardeal Pádua (<cardeal@cefetmg.br>)
 
 ## Paper abstract
 
@@ -15,6 +39,12 @@ Most previous approaches are typically based on descriptors designed to work wit
 In contrast, this letter proposes a descriptor termed Multispectral Feature Descriptor (MFD) that is especially developed, such that it can be employed with image data acquired at different frequencies across the electromagnetic spectrum.
 The performance of the MFD is evaluated by using three data sets composed of images obtained in visible light and infrared spectra, and its performance is compared with those of state-of-the-art algorithms, such as edge-oriented histogram (EOH) and log-Gabor histogram descriptor (LGHD).
 The experimental results indicate that the computational efficiency of MFD exceeds those of EOH and LGHD, and that the precision and recall values of MFD are statistically comparable to the corresponding values of the forementioned algorithms.
+
+## Datasets used in the paper
+
+- Potsdam: <https://www.isprs.org/education/benchmarks/UrbanSemLab/2d-sem-label-potsdam.aspx>
+- RGB-LWIR: <https://owncloud.cvc.uab.es/owncloud/index.php/s/1Wx715yUh6kDAO7>
+- RGB-NIR: <https://ivrlwww.epfl.ch/supplementary_material/cvpr11/index.html>
 
 ## Bibtex
 
@@ -32,33 +62,4 @@ The experimental results indicate that the computational efficiency of MFD excee
   doi       = {10.1109/lgrs.2017.2738632},
   publisher = {Institute of Electrical and Electronics Engineers ({IEEE})},
 }
-```
-
-## Datasets used in the paper
-
-- Potsdam: <https://www.isprs.org/education/benchmarks/UrbanSemLab/2d-sem-label-potsdam.aspx>
-- RGB-LWIR: <https://owncloud.cvc.uab.es/owncloud/index.php/s/1Wx715yUh6kDAO7>
-- RGB-NIR: <https://ivrlwww.epfl.ch/supplementary_material/cvpr11/index.html>
-
-## Authors
-
-- Cristiano Fraga Guimarães Nunes (<cfgnunes@gmail.com>)
-- Flávio Luis Cardeal Pádua (<cardeal@cefetmg.br>)
-
-## Getting Started
-
-### Prerequisites
-
-This section assumes Ubuntu 16.04 (also tested on Ubuntu 22.04), but the procedure is similar for other Linux distributions. The prerequisites is to install the following packages:
-
-```sh
-sudo apt -y install make python3-pip python3-venv
-```
-
-### Running the examples
-
-To run the main example, use:
-
-```sh
-make run
 ```
