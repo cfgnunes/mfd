@@ -8,7 +8,7 @@ This is the Python implementation of the Multispectral Feature Descriptor (MFD),
 
 ![MFD](images-sample/example_mfd.png)
 
-## Getting Started
+## Getting started
 
 ### Requirements
 - Python 3.6
@@ -40,7 +40,7 @@ In contrast, this letter proposes a descriptor termed Multispectral Feature Desc
 The performance of the MFD is evaluated by using three data sets composed of images obtained in visible light and infrared spectra, and its performance is compared with those of state-of-the-art algorithms, such as edge-oriented histogram (EOH) and log-Gabor histogram descriptor (LGHD).
 The experimental results indicate that the computational efficiency of MFD exceeds those of EOH and LGHD, and that the precision and recall values of MFD are statistically comparable to the corresponding values of the forementioned algorithms.
 
-## Bibtex
+## BibTeX citation
 
 ```TeX
 @article{nunes2017local,
