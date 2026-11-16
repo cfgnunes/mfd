@@ -5,6 +5,14 @@ channels:
 
 dependencies:
   - python>=3
+  - jupyter
+  - matplotlib
+  - numpy
+  - pandas
+  - pyfftw
+  - scipy
   - pip
   - pip:
-    - -r requirements.txt
+    - opencv-contrib-python-headless
+    - opencv-python-headless
+    - phasepack
