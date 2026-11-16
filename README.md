@@ -2,7 +2,7 @@
 
 This is the Python implementation of the Multispectral Feature Descriptor (MFD), as described in the paper "[A Local Feature Descriptor Based on Log-Gabor Filters for Keypoint Matching in Multispectral Images](https://ieeexplore.ieee.org/document/8024177)".
 
-[Click here](https://github.com/cfgnunes/mfd/blob/main/MatchingExample.ipynb) to see a example.
+[View the example notebook](https://github.com/cfgnunes/mfd/blob/main/MatchingExample.ipynb).
 
 ![SIFT](images-sample/example_sift.png)
 
